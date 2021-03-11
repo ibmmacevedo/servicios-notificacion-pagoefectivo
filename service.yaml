@@ -1,13 +1,13 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: service-notificacion-service
+  name: servicios-notificacion-pagoefectivo-service
   labels:
-    run: service-notificacion
+    run: servicios-notificacion-pagoefectivo
 spec:
   type: NodePort
   ports:
     - port: 8080
       protocol: TCP
   selector:
-    run: service-notificacion
+    run: servicios-notificacion-pagoefectivo

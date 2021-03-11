@@ -40,7 +40,7 @@ public class RabbitMQListener implements MessageListener {
 	
 	
 	@Override
-	@RabbitListener(queues = "pedidos_notificacion_mail")
+	@RabbitListener(queues = "pedidos-notificacion-mail-pagoefectivo")
 	public void recieveMessageForMail(String msg) throws MailingException {
 		log.info("Recibiendo mensaje de pedidos para notificar por mail ");
 		try {

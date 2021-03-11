@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: service-notificacion-deploy
+  name: servicios-notificacion-pagoefectivo-deploy
   #namespace: dev-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      run: service-notificacion
+      run: servicios-notificacion-pagoefectivo
   template:
     metadata:
       labels:
-        run: service-notificacion
+        run: servicios-notificacion-pagoefectivo
     spec:
       terminationGracePeriodSeconds: 31
       containers:
-        - name: service-notificacion
-          image: us.icr.io/tienda-virtual-desa/service-notificacion:last
+        - name: servicios-notificacion-pagoefectivo
+          image: us.icr.io/tienda-virtual-desa/servicios-notificacion-pagoefectivo:last
           imagePullPolicy: "Always"
           livenessProbe:
              httpGet:
