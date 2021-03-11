@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-notificacion-deploy
+  #namespace: dev-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: service-notificacion
+  template:
+    metadata:
+      labels:
+        run: service-notificacion
+    spec:
+      terminationGracePeriodSeconds: 31
+      containers:
+        - name: service-notificacion
+          image: us.icr.io/tienda-virtual-desa/service-notificacion:last
+          imagePullPolicy: "Always"
+          livenessProbe:
+             httpGet:
+              path: /claro/actuator/health/liveness
+              port: 8080
+             initialDelaySeconds: 50
+             periodSeconds: 3
+             failureThreshold: 5    
+          readinessProbe:
+             httpGet:
+              path: /claro/actuator/health/readiness
+              port: 8080
+             initialDelaySeconds: 50
+             periodSeconds: 3  
+             failureThreshold: 5
+          resources:
+            limits:
+              cpu: 700m
+              memory: 340Mi
+            requests:
+              cpu: 100m
+              memory: 250Mi
+          env:
+            - name: ENVIRONMENT
+              valueFrom:
+                secretKeyRef:
+                  name: spring-db-security
+                  key: spring.environment
+            - name: DB9_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: spring-db-security
+                  key: spring.db9.host
+            - name: DB9_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: spring-db-security
+                  key: spring.db9.port
+            - name: DB9_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: spring-db-security
+                  key: spring.db9.name
+            - name: DB9_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: spring-db-security
+                  key: spring.db9.user
+            - name: DB9_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: spring-db-security
+                  key: spring.db9.pwd
+            #SENDGRID
+            - name: SENDGRID_URL_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: spring-db-security
+                  key: sendgrid.url.base
+            - name: SENDGRID_MODULE_ACTION
+              valueFrom:
+                secretKeyRef:
+                  name: spring-db-security
+                  key: sendgrid.module.action
+            - name: SENDGRID_API_USER
+              valueFrom:
+                secretKeyRef:
+                  name: spring-db-security
+                  key: sendgrid.api.user
+            - name: SENDGRID_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: spring-db-security
+                  key: sendgrid.api.key
+            - name: CALLCENTER_ESTADO
+              valueFrom:
+                secretKeyRef:
+                  name: spring-db-security
+                  key: callcenter.estado
+            - name: CALLCENTER_A365_URL
+              valueFrom:
+                secretKeyRef:
+                  name: spring-db-security
+                  key: call.center.a365.url
+            - name: CALLCENTER_TIMEOUT
+              valueFrom:
+                secretKeyRef:
+                  name: spring-db-security
+                  key: call.center.timeout 
